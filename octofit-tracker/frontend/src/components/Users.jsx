@@ -1,3 +1,8 @@
+const CODESPACE_NAME = import.meta.env.VITE_CODESPACE_NAME;
+const API_URL = CODESPACE_NAME
+  ? `https://${CODESPACE_NAME}-8000.app.github.dev/api/users/`
+  : 'http://localhost:8000/api/users/';
+
 import { useEffect, useState } from 'react';
 import { buildApiUrl } from '../lib/api';
 
@@ -9,7 +14,7 @@ export default function Users() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(buildApiUrl('users'));
+        const res = await fetch(API_URL);
         if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
         const payload = await res.json();
         const records = Array.isArray(payload) ? payload : payload.data || payload.results || [];

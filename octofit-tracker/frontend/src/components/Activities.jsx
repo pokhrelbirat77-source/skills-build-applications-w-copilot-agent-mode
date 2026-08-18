@@ -1,3 +1,8 @@
+const CODESPACE_NAME = import.meta.env.VITE_CODESPACE_NAME;
+const API_URL = CODESPACE_NAME
+  ? `https://${CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+  : 'http://localhost:8000/api/activities/';
+
 import { useEffect, useState } from 'react';
 import { buildApiUrl } from '../lib/api';
 
@@ -9,7 +14,7 @@ export default function Activities() {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const res = await fetch(buildApiUrl('activities'));
+        const res = await fetch(API_URL);
         if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
         const payload = await res.json();
         const records = Array.isArray(payload) ? payload : payload.data || payload.results || [];
